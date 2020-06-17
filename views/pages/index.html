@@ -11,35 +11,8 @@
 </style>
 <body>
   <h1> Maktabty Api </h1>
-  <img src={{img}} alt="">
  </body>
 
- <script>
- localStorage.removeItem('token');
- var Reslogin;
-   console.log('from html');
 
-   // Login Function -------------------------------------------------------------
-   const URL=  'http://localhost:8080/books';
-  var img;
-   $.ajax({
-    type: "GET",
-    url: URL,
-
-    dataType: "json",
-    contentType: "application/json; charset=utf-8",
-    success: function(result){
-  
-      console.log(result[0].BookImg);
-      
-      img =result[0].BookImg;
-      console.log(img);
-      
-    }
-  
-   }) 
-   //-------------------------------------------------------
-    
-  </script>
 
 </html>
