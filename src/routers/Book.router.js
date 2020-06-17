@@ -2,7 +2,7 @@ const router=require('express').Router();
 let Book =require('../models/Book');
 let auth = require('../middleware/auth');
 var fs = require('fs');
-let img = require('../models/img');
+
 // Book Router ----------------------------------------------------------------------
 // GET All Books  ___________________________________
 router.get('/',(req,res)=>{

@@ -1,5 +1,4 @@
 const mongoose=require('mongoose');
-let img = require('../models/img');
 
 const Book_schema=new mongoose.Schema({
     
