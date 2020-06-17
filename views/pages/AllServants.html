@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
+
+
+  </head>
+
+<style>
+ body{
+        background-color: rgb(16, 120, 180);
+    }
+    .Cont{
+      background-color: rgb(33, 39, 48);
+        width: 79%;
+    position: relative;
+    left: 12%;
+    border-radius: 5px;
+    padding-top: 3%;
+    padding-bottom: 3%;
+}
+
+    .DisCont{
+      background-color:rgb(16, 120, 180);
+      position: relative;
+    }
+    
+    .Head_cont{
+    color: white;
+    position: relative;
+    margin-left: 36%;
+    padding-top: 7%;
+    font-size: xx-large;
+
+    } 
+    .partI{
+        background-color: rgb(33, 39, 48);
+        position: relative;
+        border-radius: 5px;
+        
+    }
+    .partII{
+        background-color: white;
+        height: 100%;
+        width: 67%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-radius: 5px;
+    }
+   
+    .servList{
+      list-style: none;
+      padding-top: 14%;
+    padding-bottom: 16px;
+    height: 350px;
+      overflow-y: auto;
+    }
+    .servList li{
+      padding-bottom: 12%;
+      cursor: pointer;
+     
+    }
+    .servList li a{
+         color: white;
+         font-size: 20px;
+         font-weight: 600;
+         letter-spacing: 2px;
+      
+    }
+    .msgOne{
+      margin-top: 27%;
+      margin-left: 31%;
+    }
+
+    .Titlecont{
+      font-size: 22px;
+    font-weight: 600;
+    padding-bottom: 1%;
+    }
+    .parCont{
+      color: rgb(16, 120, 180);
+    font-size: 15px;
+    font-weight: 600;
+    padding-bottom: 0%;
+    }
+   .ServInfo{
+      margin-left: 8%;
+      margin-top: 9%;
+    }
+
+    /* width */
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color:rgb(16, 120, 180); 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color:rgb(16, 101, 150);
+}
+
+
+.btncont{
+   background-color:transparent;
+   border: none;
+   width: 20;
+}
+.btndel{
+  background-color:transparent;
+   border: none;
+   width: 20;
+}
+.btnDiv{
+  right: 0;
+    position: absolute;
+    bottom: 0;
+    margin-right: 3%;
+    margin-bottom: 3%
+}
+.bckDiv{
+  left: 0;
+    position: absolute;
+    bottom: 0;
+    margin-left: 3%;
+    margin-bottom: -5%;
+}
+</style>
+
+<body>
+
+  <div class="DisCont">
+    <h1 class="Head_cont">خدام أسرة الأنبا إبرام لخدمة المرضى </h1>
+         <div class="row Cont" id="Cont">
+              <div class="col-md-4 partI">
+                <ul id="ServList" class="servList">    </ul>
+                <div class="bckDiv">
+                  <button class="btncont">
+                     <i class="fas fa-arrow-left" style="font-size:25px;color:rgb(16, 101, 150)" ></i>
+                    </button>
+
+                </div>
+              </div>
+      
+             
+              
+          </div>
+  </div>
+    
+
+</body>
+
+<script>
+  var Servantindex;
+  var IdServDel;
+$("#ServInfo").hide();
+ const URL = 'https://afternoon-woodland-71837.herokuapp.com/servants' ;
+ var User_Token = localStorage.getItem('token');
+ var All_servants ;
+     $.ajax({
+    type: "GET",
+    url: URL,
+    crossDomain: true,
+    dataType: "json",
+    contentType: "application/json; charset=utf-8",
+    headers: {
+        'x-access-token': User_Token
+    },
+    success: (result)=>{
+        All_servants = result;
+        console.log(result); 
+
+        console.log(All_servants.length);
+        
+         var index = 0;
+        while( index < All_servants.length){
+          $("#ServList").append(`<li ><a id = "${index}"> ${All_servants[index].name}</a></li>`);  
+          index++;
+        } 
+        console.log('finish add all servant list items');
+        
+        $("#Cont").append( `  <div class="col-md-8 partII" id="partII" >
+                                <h2 class="msgOne" id="MsgOne"> Please Select Servant</h2>
+                               <div class="ServInfo" id="ServInfo">
+                         
+                              </div>
+                              <div class=btnDiv>
+
+                                 <button class="btndel">
+                                  <i class="fas fa-trash-alt"  style="font-size:25px;color:red"></i>
+                                    </button>
+                                 <button class="btncont" > 
+                                  <i class="fas fa-edit" style="font-size:25px;color:green"></i> 
+                                  </button>
+
+                              </div>
+                             
+                              </div> `)
+
+        console.log('to function');
+  
+        $( "ul li a" ).click(function() {
+          $("#MsgOne").hide();
+          $("#ServInfo").show();
+          var index = this.id;
+          Servantindex=this.id;
+          console.log(index);
+          $("#ServInfo").empty();
+           IdServDel = All_servants[Servantindex]._id;
+         $("#ServInfo").append(`<div class="Titlecont"> Servant Id  <p class="parCont" > ${All_servants[index]._id}</p></div>`); 
+         $("#ServInfo").append(`<div class="Titlecont"> Servant Email <p class="parCont"> ${All_servants[index].email}</p></div>`);
+         $("#ServInfo").append(`<div class="Titlecont"> Servant Name <p class="parCont"> ${All_servants[index].name}</p></div>`);
+         $("#ServInfo").append(`<div class="Titlecont"> Father <p class="parCont"> ${All_servants[index].IsFather}</p></div>`);
+         $("#ServInfo").append(`<div class="Titlecont"> Admin <p class="parCont"> ${All_servants[index].IsAdmin}</p></div>`);
+         
+         });
+      //------------------------
+      
+      $( ".btndel" ).click(function() {
+    console.log('delete :  ' + Servantindex );
+    
+    console.log(IdServDel);
+    //const DelURL = `https://afternoon-woodland-71837.herokuapp.com/servants/${IdServDel}`;
+    const DelURL = `http://localhost:8080/servants/${IdServDel}`;
+  
+    
+    console.log(DelURL);
+    
+    // Delete Servant
+      //-----------------------
+         $.ajax(
+        {
+    type: "DELETE",
+    url: DelURL,
+
+    crossDomain: true,
+    dataType: "json",
+    contentType: "application/json; charset=utf-8",
+    headers: {
+        'x-access-token': User_Token
+    },
+    success: (result)=>{
+ 
+      console.log(result); 
+      location.replace("/AllServants" );
+   },
+
+    error: (error)=> {
+      if(error.status == 401){
+        alert("error :" + "you are  Unauthorized" );
+      }
+      else if(error.status == 400){
+        alert("error :" + " Bad Request" );
+      }
+      else{
+        alert("error" );
+      }
+     
+    }
+  }
+        )   
+      //------------------------
+      
+  })
+      $( ".btncont" ).click(function() {
+    console.log('update :  ' + Servantindex );
+    console.log(All_servants[Servantindex]._id);
+  })
+  
+   },
+
+    error: (error)=> {
+      if(error.status == 401){
+        alert("error :" + "you are  Unauthorized" );
+      }
+      else if(error.status == 400){
+        alert("error :" + " Bad Request" );
+      }
+      else{
+        alert("error" );
+      }
+     
+    }
+
+   
+  })
+
+  $(".bckDiv").click( function backbtn(){
+    location.replace("/home" ); 
+  })
+ 
+ 
+
+</script>
+
+</html>
