@@ -36,17 +36,11 @@ router.post('/add',(req,res)=>{
     const BookAuther = req.body.BookAuther;
    const BookDes = req.body.BookDes;
    const BookPrice =req.body.BookPrice;
-    var BookImg =new img ;
-    BookImg.data = fs.readFileSync(req.body.BookImg);
-    BookImg.contentType = 'image/png';
-   
- 
     const NewBook=new Book({
         BookName,
         BookAuther,
         BookDes,
-        BookPrice,
-        BookImg
+        BookPrice
     });
     NewBook.save()
     
@@ -64,12 +58,7 @@ router.patch('/update/:id',auth,(req,res)=>{
         book.BookAuther = req.body.BookAuther;
         book.BookDes = req.body.BookDes;
         book.BookPrice =req.body.BookPrice;
-        book.BookImg = req.body.BookImg;
-        var a = new A;
-        a.img.data = fs.readFileSync(req.body.BookImg);
-        a.img.contentType = 'image/jpg';
-        book.BookImg = a;
-
+       
         book.save()
     .then(()=>res.json('book Updated'))
     .catch(err=>res.status(400).json('Error: '+err))
