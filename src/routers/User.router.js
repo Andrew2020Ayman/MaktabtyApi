@@ -87,7 +87,7 @@ router.delete('/:id',auth,(req,res)=>{
 
 // Add New User _________________________
 router.post('/add',(req,res)=>{
-
+console.log(req);
  let LoginID; 
 
 /* --------- create Login --------- */
@@ -98,10 +98,10 @@ router.post('/add',(req,res)=>{
         password
     });
 
-   newUserLogin.save()
+      newUserLogin.save()
     
-    .then( async ()=>{
-        return newUserLogin.createSession();
+    .then( ()=>{ 
+        return  newUserLogin.createSession();
     }).then((refreshToken) =>{
          /* Session created successfully - refreshToken returned.
              => now we geneate an access auth token for the userLogin  */
@@ -113,11 +113,7 @@ router.post('/add',(req,res)=>{
     }).then((authTokens)=>{
           /* Now we construct and send the response to the userLogin
               with their auth tokens in the header and the userLogin object in the body */
-         res
-         .header('x-refresh-token', authTokens.refreshToken)
-         .header('x-access-token', authTokens.accessToken)
-         .send(newUserLogin);
-
+         
          const LoginID = newUserLogin._id;
          /* ------------------------------- */
          const Firstname=req.body.Firstname;
@@ -131,9 +127,14 @@ router.post('/add',(req,res)=>{
              LoginID
          });
          NewUser.save()
-         
-         .then(async()=>res.json('User Added! '))
+         /* 
+         .then( res=>  res.json('User Added! ')) */
          .catch(err=> res.status(400).send('Error :'+err));
+
+         res
+         .header('x-refresh-token', authTokens.refreshToken)
+         .header('x-access-token', authTokens.accessToken)
+         /*  .send(newUserLogin); */
 
          /* ------------------------------- */
     }).catch((e) => {
