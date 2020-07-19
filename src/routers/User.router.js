@@ -67,7 +67,7 @@ router.get('/:id',auth,(req,res)=>{
 });
 
 // Get User by Login ID______________________________
-router.get('login/:LoginID',auth,(req,res)=>{
+router.get('/login/:LoginID',auth,(req,res)=>{
     const LoginID = req.params.LoginID.toString();
     User.find({LoginID : LoginID })
      .then(user=>res.json( user ))
