@@ -66,6 +66,15 @@ router.get('/:id',auth,(req,res)=>{
      .catch(err => res.status(400).json('Error : '+err));
 });
 
+// Get User by Login ID______________________________
+router.get('login/:LoginID',auth,(req,res)=>{
+    const LoginID = req.params.LoginID.toString();
+    User.find({LoginID : LoginID })
+     .then(user=>res.json( user ))
+     .catch(err => res.status(400).json('Error : '+err));
+});
+//-----------------------------------------------------
+
 // Delete User By id -----------------------------------------
 router.delete('/:id',auth,(req,res)=>{
 
