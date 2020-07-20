@@ -87,7 +87,7 @@ router.delete('/:id',auth,(req,res)=>{
 
 // Add New User _________________________
 router.post('/add',(req,res)=>{
-console.log(req);
+
  let LoginID; 
 
 /* --------- create Login --------- */
@@ -118,7 +118,7 @@ console.log(req);
          /* ------------------------------- */
          const Firstname=req.body.Firstname;
          const LastName=req.body.LastName;
-         const MyBooks=req.body.MyBooks;
+         /* const MyBooks=req.body.MyBooks; */
          
          const NewUser = new User({
              Firstname,
