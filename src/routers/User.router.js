@@ -88,7 +88,7 @@ router.delete('/:id',auth,(req,res)=>{
 // Add New User _________________________
 router.post('/add',(req,res)=>{
 
- let LoginID; 
+
 
 /* --------- create Login --------- */
     const email = req.body.email;
@@ -101,6 +101,7 @@ router.post('/add',(req,res)=>{
       newUserLogin.save()
     
     .then( ()=>{ 
+        loginFinish = true;
         return  newUserLogin.createSession();
     }).then((refreshToken) =>{
          /* Session created successfully - refreshToken returned.
@@ -113,37 +114,42 @@ router.post('/add',(req,res)=>{
     }).then((authTokens)=>{
           /* Now we construct and send the response to the userLogin
               with their auth tokens in the header and the userLogin object in the body */
+              /* LoginID = newUserLogin._id; */
+              console.log('login done');
+             
+              res
+              .header('x-refresh-token', authTokens.refreshToken)
+              .header('x-access-token', authTokens.accessToken)
+              .send(newUserLogin);
          
-         const LoginID = newUserLogin._id;
-         /* ------------------------------- */
-         const Firstname=req.body.Firstname;
-         const LastName=req.body.LastName;
-         /* const MyBooks=req.body.MyBooks; */
          
-         const NewUser = new User({
-             Firstname,
-             LastName,
-             MyBooks,
-             LoginID
-         });
-         NewUser.save()
-         /* 
-         .then( res=>  res.json('User Added! ')) */
-         .catch(err=> res.status(400).send('Error :'+err));
-
-         res
-         .header('x-refresh-token', authTokens.refreshToken)
-         .header('x-access-token', authTokens.accessToken)
-         /*  .send(newUserLogin); */
-
-         /* ------------------------------- */
     }).catch((e) => {
         res.status(400).send(e);
-    })
+    }) /**/
    
    /* --------------------------------- */
 
-    
+   
+        /* ------------------------------- */
+    const Firstname=req.body.Firstname;
+    const LastName=req.body.LastName;
+     const MyBooks=[]; 
+     const LoginID = newUserLogin._id;
+  
+    const NewUser =  new User({
+        Firstname,
+        LastName,
+        MyBooks,
+        LoginID
+    });
+    NewUser.save();
+    /* 
+     .then(  res=> res.json('User Added! '))   
+    .catch(err=> res.status(400).send('Error :'+err));*/
+    /* ------------------------------- */
+ 
+   
+
 });
 
 // Update User--------------------------------------
